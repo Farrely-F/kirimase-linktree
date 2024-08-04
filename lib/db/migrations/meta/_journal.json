@@ -15,6 +15,13 @@
       "when": 1722526050572,
       "tag": "0001_daily_richard_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1722739597709,
+      "tag": "0002_famous_scarecrow",
+      "breakpoints": true
     }
   ]
 }

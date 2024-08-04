@@ -2,20 +2,20 @@ import { z } from "zod";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("user", {
-        id: text("id").notNull().primaryKey(),
-        email: text("email").notNull().unique(),
-        hashedPassword: text("hashed_password").notNull(),
-        name: text("name"),
+  id: text("id").notNull().primaryKey(),
+  email: text("email").notNull().unique(),
+  hashedPassword: text("hashed_password").notNull(),
+  name: text("name"),
+  avatar: text("avatar"),
 });
 
 export const sessions = sqliteTable("session", {
-        id: text("id").notNull().primaryKey(),
-        userId: text("user_id")
-        .notNull()
-        .references(() => users.id),
-        expiresAt: integer("expires_at").notNull(),
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  expiresAt: integer("expires_at").notNull(),
 });
-
 
 export const authenticationSchema = z.object({
   email: z.string().email().min(5).max(64),
@@ -28,6 +28,7 @@ export const authenticationSchema = z.object({
 export const updateUserSchema = z.object({
   name: z.string().min(3).optional(),
   email: z.string().min(4).optional(),
+  avatar: z.string().optional(),
 });
 
 export type UsernameAndPassword = z.infer<typeof authenticationSchema>;

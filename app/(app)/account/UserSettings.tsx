@@ -2,6 +2,7 @@
 import UpdateNameCard from "./UpdateNameCard";
 import UpdateEmailCard from "./UpdateEmailCard";
 import { AuthSession } from "@/lib/auth/utils";
+import { UpdateAvatarCard } from "./UpdateAvatarCard";
 
 export default function UserSettings({
   session,
@@ -10,6 +11,7 @@ export default function UserSettings({
 }) {
   return (
     <>
+      <UpdateAvatarCard avatar={session?.user.avatar ?? ""} />
       <UpdateNameCard name={session?.user.name ?? ""} />
       <UpdateEmailCard email={session?.user.email ?? ""} />
     </>

@@ -23,7 +23,7 @@ interface ActionResult {
 
 export async function signInAction(
   _: ActionResult,
-  formData: FormData,
+  formData: FormData
 ): Promise<ActionResult> {
   const { data, error } = validateAuthFormData(formData);
   if (error !== null) return { error };
@@ -41,7 +41,7 @@ export async function signInAction(
 
     const validPassword = await new Argon2id().verify(
       existingUser.hashedPassword,
-      data.password,
+      data.password
     );
     if (!validPassword) {
       return {
@@ -61,7 +61,7 @@ export async function signInAction(
 
 export async function signUpAction(
   _: ActionResult,
-  formData: FormData,
+  formData: FormData
 ): Promise<ActionResult> {
   const { data, error } = validateAuthFormData(formData);
 
@@ -103,20 +103,22 @@ export async function signOutAction(): Promise<ActionResult> {
 
 export async function updateUser(
   _: any,
-  formData: FormData,
+  formData: FormData
 ): Promise<ActionResult & { success?: boolean }> {
   const { session } = await getUserAuth();
   if (!session) return { error: "Unauthorised" };
 
   const name = formData.get("name") ?? undefined;
   const email = formData.get("email") ?? undefined;
+  const avatar = formData.get("avatar") ?? undefined;
 
-  const result = updateUserSchema.safeParse({ name, email });
+  const result = updateUserSchema.safeParse({ name, email, avatar });
 
   if (!result.success) {
     const error = result.error.flatten().fieldErrors;
     if (error.name) return { error: "Invalid name - " + error.name[0] };
     if (error.email) return { error: "Invalid email - " + error.email[0] };
+    if (error.avatar) return { error: "Invalid avatar - " + error.avatar[0] };
     return genericError;
   }
 
@@ -131,4 +133,3 @@ export async function updateUser(
     return genericError;
   }
 }
-
